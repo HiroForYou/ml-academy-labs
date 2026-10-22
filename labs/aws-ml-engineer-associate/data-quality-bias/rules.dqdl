@@ -1,0 +1,8 @@
+Rules = [
+  IsComplete "application_id",
+  IsUnique "application_id",
+  ColumnValues "age" between 18 and 100,
+  Completeness "income" > 0.85,
+  ColumnValues "default" in [0, 1],
+  RowCount > 5000
+]
