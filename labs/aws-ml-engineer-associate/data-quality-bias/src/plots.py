@@ -85,6 +85,21 @@ LABELS = {
 }
 
 
+# Nombres de estrategia de imbalance.compare traducidos. Strategy names from imbalance.compare, translated.
+STRATEGIES = {
+    "es": {
+        "always 'no default'": "siempre «sin impago»",
+        "xgboost baseline": "XGBoost base",
+        "SMOTE (train only)": "SMOTE (solo entrenamiento)",
+    },
+    "en": {},
+}
+
+
+def strategy_name(name: str, lang: str) -> str:
+    return STRATEGIES[lang].get(name, name)
+
+
 def clean_axes(ax) -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -190,7 +205,14 @@ def metrics_comparison(metrics: pd.DataFrame, lang: str = "es"):
     width = 0.8 / len(metrics)
     fig, ax = plt.subplots(figsize=(9, 3.8))
     for i, (name, row) in enumerate(metrics[cols].iterrows()):
-        ax.bar(x + i * width - 0.4 + width / 2, row.values, width=width, color=colors[i % len(colors)], label=name, zorder=3)
+        ax.bar(
+            x + i * width - 0.4 + width / 2,
+            row.values,
+            width=width,
+            color=colors[i % len(colors)],
+            label=strategy_name(name, lang),
+            zorder=3,
+        )
     ax.set_xticks(x, cols)
     ax.set_ylim(0, 1.05)
     ax.set_ylabel(t["score"])
@@ -216,6 +238,6 @@ def confusion_matrices(y_true, predictions: dict, names: list[str], lang: str = 
         ax.set_yticks([0, 1], ["0", "1"])
         ax.set_xlabel(t["predicted"])
         ax.set_ylabel(t["actual"])
-        ax.set_title(t["cm_title"].format(name=name), loc="left", fontsize=10)
+        ax.set_title(t["cm_title"].format(name=strategy_name(name, lang)), loc="left", fontsize=10)
     fig.tight_layout()
     return fig
