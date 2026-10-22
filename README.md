@@ -1,43 +1,31 @@
 # ML Academy — labs
 
-**ES** · [EN](#english)
+**Español** · [English](README.en.md)
 
-Laboratorios locales y gratuitos para los cursos de [ML Academy](https://github.com/HiroForYou/ml-academy-web). No requieren cuentas de nube, credenciales ni servicios de pago.
+Laboratorios locales y gratuitos para los cursos de [ML Academy](https://github.com/HiroForYou/ml-academy-web). Son notebooks de Jupyter que no requieren cuentas de nube, credenciales ni servicios de pago.
 
 ## Estructura
 
 ```text
 labs/<curso>/<tema>/
-├── README.md          # objetivo, ejecución y equivalencia en la nube
-├── requirements.txt   # solo las dependencias de ese laboratorio
-└── src/
+├── README.md / README.en.md          # objetivo, ejecución y equivalencia en la nube
+├── notebook.es.ipynb / notebook.en.ipynb
+├── requirements.txt                  # solo las dependencias de ese laboratorio
+├── .gitignore
+└── src/                              # módulos reutilizables que importa el notebook
 ```
 
-Cada laboratorio tiene su propio entorno virtual y sus propias dependencias.
+Cada laboratorio tiene su propio entorno virtual. Los notebooks se publican con sus salidas para poder leerlos en GitHub sin ejecutarlos.
 
 ## Laboratorios
 
 | Curso | Tema | Laboratorio | Dependencias |
 |---|---|---|---|
-| AWS ML Engineer – Associate | 1.3 Calidad de datos y sesgo | [data-quality-bias](labs/aws-ml-engineer-associate/data-quality-bias) | pandas, scikit-learn, XGBoost, imbalanced-learn |
+| AWS ML Engineer – Associate | 1.3 Calidad de datos y sesgo | [data-quality-bias](labs/aws-ml-engineer-associate/data-quality-bias) | pandas, scikit-learn, XGBoost, imbalanced-learn, matplotlib, JupyterLab |
 
 ## Desarrollo
 
 ```bash
 pip install -r requirements-dev.txt
-ruff check . && ruff format --check .
+ruff check . && ruff format --check .   # también revisa los notebooks
 ```
-
----
-
-## English
-
-Free, local labs for the [ML Academy](https://github.com/HiroForYou/ml-academy-web) courses. They don't require cloud accounts, credentials, or paid services.
-
-Each lab lives in `labs/<course>/<topic>/` with its own `README.md`, `requirements.txt` (only what that lab needs), and `src/`. Use a separate virtual environment per lab.
-
-| Course | Topic | Lab | Dependencies |
-|---|---|---|---|
-| AWS ML Engineer – Associate | 1.3 Data quality and bias | [data-quality-bias](labs/aws-ml-engineer-associate/data-quality-bias) | pandas, scikit-learn, XGBoost, imbalanced-learn |
-
-Development: `pip install -r requirements-dev.txt`, then `ruff check . && ruff format --check .`.

@@ -1,12 +1,12 @@
 # Lab 1.3 — Calidad de datos, sesgo y desbalance
 
-**ES** · [EN](#english)
+**Español** · [English](README.en.md)
 
 **Curso:** AWS Certified Machine Learning Engineer – Associate (MLA-C02) · **Tema:** 1.3 Validar la calidad de datos y gestionar el sesgo
 
 ## Objetivo
 
-Reproducir localmente lo que hacen AWS Glue Data Quality, DataBrew o Data Wrangler y SageMaker Clarify en este flujo:
+Reproducir localmente lo que hacen AWS Glue Data Quality, DataBrew o Data Wrangler y SageMaker Clarify:
 
 1. Validar datos con reglas al estilo DQDL y ver cómo fallan.
 2. Limpiar duplicados, valores inválidos, faltantes y outliers **sin data leakage**.
@@ -17,13 +17,12 @@ No requiere cuenta de AWS, credenciales ni internet, salvo para instalar paquete
 
 ## Dataset
 
-`src/generate_data.py` genera 10.150 solicitudes de préstamo sintéticas con una semilla fija, así que el resultado es reproducible. Contienen problemas a propósito:
+`src/generate_data.py` genera 10.150 solicitudes de préstamo sintéticas con una semilla fija, así que el resultado es reproducible. Incluyen problemas a propósito:
 
-- 150 duplicados.
-- 15 edades inválidas.
+- 150 duplicados y 15 edades inválidas.
 - Alrededor de 9 % de `income` faltante, más frecuente entre impagos.
 - 40 outliers de captura.
-- Un 8 % de impagos.
+- 8,6 % de impagos.
 - Mayores de 60 subrepresentados y con más impagos.
 
 ## Ejecutar
@@ -35,23 +34,26 @@ cd labs/aws-ml-engineer-associate/data-quality-bias
 python -m venv .venv
 # Windows: .venv\Scripts\activate    ·    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-python src/run_lab.py
+jupyter lab notebook.es.ipynb
 ```
 
-Al ejecutarse, el laboratorio guarda los datos crudos en `data/loans_raw.csv`.
+El notebook ya incluye las salidas y los gráficos de una ejecución, así que puedes leerlo directamente en GitHub. Para reproducirlo, usa *Run → Run All Cells*.
+
+| Archivo | Contenido |
+|---|---|
+| `notebook.es.ipynb` | Laboratorio guiado en español |
+| `rules.dqdl` | Reglas de calidad con sintaxis DQDL |
+| `src/` | Módulos reutilizables: datos, calidad, limpieza, sesgo, desbalance y gráficos |
 
 ## Qué observar
 
-| Paso | Resultado esperado |
+| Paso | Resultado de la ejecución incluida |
 |---|---|
-| 2. Calidad | Score de 67 %: `IsUnique` y `ColumnValues "age"` fallan. En Glue ETL, el trabajo se detendría. |
-| 3. Limpieza | Mediana y límites IQR calculados solo con el entrenamiento; división estratificada (≈ 8,6 % de impagos en ambos conjuntos). El score sube a 100 %. |
-| 4. Sesgo | CI ≈ +0,72 (faceta d subrepresentada) y DPL ≈ −0,04 (la faceta d tiene más impagos). |
-| 5. Desbalance | La línea base logra ≈ 91 % de *accuracy* con *recall* ≈ 0,06. `scale_pos_weight` y SMOTE sacrifican *accuracy* para subir el *recall* a ≈ 0,56–0,58. |
-
-Prueba esto:
-- Cambia `Completeness "income" > 0.85` por `> 0.95` en `rules.dqdl`.
-- Aplica SMOTE **antes** de dividir los datos y observa cómo se inflan las métricas de prueba.
+| 1. Datos crudos | 10.150 filas, 8,6 % de impagos, 8,9 % de `income` faltante. Predecir siempre «sin impago» ya da 91 % de *accuracy*. |
+| 2. Calidad | Score de 67 %: fallan `IsUnique` (150 duplicados) y `ColumnValues "age"` (15 edades inválidas). En Glue ETL, el trabajo se detendría. |
+| 3. Limpieza | Quedan 9.985 filas. La mediana y los límites IQR se calculan solo con el entrenamiento, y la división estratificada mantiene 8,64 % y 8,61 % de impagos. El score sube a 100 %. |
+| 4. Sesgo | CI = +0,72: la faceta d está subrepresentada. DPL = −0,041 (8,1 % frente a 12,2 %): la faceta d tiene más impagos. |
+| 5. Desbalance | La línea base logra 91,5 % de *accuracy* con *recall* de 0,06. `scale_pos_weight=10.6` sube el *recall* a 0,56 y el F1 a 0,27; SMOTE, aplicado solo al entrenamiento, sube el *recall* a 0,58. |
 
 ## Equivalencia en AWS
 
@@ -64,71 +66,7 @@ Prueba esto:
 
 ## Referencias
 
-- [AWS Glue Data Quality](https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html) · [DQDL](https://docs.aws.amazon.com/glue/latest/dg/dqdl.html)
-- [DataBrew: outliers](https://docs.aws.amazon.com/databrew/latest/dg/recipe-actions.outliers.html)
-- [Métricas de sesgo pre-training](https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-measure-data-bias.html)
-- [Hiperparámetros de XGBoost](https://docs.aws.amazon.com/sagemaker/latest/dg/xgboost_hyperparameters.html)
-
----
-
-## English
-
-**Course:** AWS Certified Machine Learning Engineer – Associate (MLA-C02) · **Topic:** 1.3 Validate data quality and manage bias
-
-### Goal
-
-Reproduce locally what AWS Glue Data Quality, DataBrew or Data Wrangler, and SageMaker Clarify do in this workflow:
-
-1. Validate data with DQDL-style rules and watch them fail.
-2. Clean duplicates, invalid values, missing values, and outliers **without data leakage**.
-3. Measure pre-training bias with **CI** and **DPL**.
-4. Compare imbalance strategies: `scale_pos_weight` and SMOTE against a baseline.
-
-No AWS account, credentials, or internet access is needed, except to install packages.
-
-### Dataset
-
-`src/generate_data.py` generates 10,150 synthetic loan applications with a fixed seed, so results are reproducible. They contain deliberate problems:
-
-- 150 duplicates.
-- 15 invalid ages.
-- About 9% missing `income`, more common among defaults.
-- 40 data-entry outliers.
-- 8% defaults.
-- Applicants over 60 are underrepresented and default more often.
-
-### Run
-
-Requires Python 3.10 or later.
-
-```bash
-cd labs/aws-ml-engineer-associate/data-quality-bias
-python -m venv .venv
-# Windows: .venv\Scripts\activate    ·    macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
-python src/run_lab.py
-```
-
-When it runs, the lab saves the raw data to `data/loans_raw.csv`.
-
-### What to look for
-
-| Step | Expected result |
-|---|---|
-| 2. Quality | 67% score: `IsUnique` and `ColumnValues "age"` fail. In Glue ETL, the job would stop. |
-| 3. Cleaning | Median and IQR bounds computed on the training split only; stratified split (≈ 8.6% defaults in both sets). The score rises to 100%. |
-| 4. Bias | CI ≈ +0.72 (facet d underrepresented) and DPL ≈ −0.04 (facet d defaults more). |
-| 5. Imbalance | The baseline gets ≈ 91% accuracy with recall ≈ 0.06. `scale_pos_weight` and SMOTE trade accuracy for recall of ≈ 0.56–0.58. |
-
-Try this:
-- Change `Completeness "income" > 0.85` to `> 0.95` in `rules.dqdl`.
-- Apply SMOTE **before** splitting the data and watch the test metrics inflate.
-
-### AWS equivalent
-
-| This lab | On AWS | Main differences |
-|---|---|---|
-| `quality.py` + `rules.dqdl` | AWS Glue Data Quality (DQDL), *Evaluate Data Quality* transform | Glue supports many more rules, dynamic rules (`avg(last(3))`), anomaly detection, recommendations, CloudWatch metrics, and the option to stop the job. This evaluator implements only 6 rule types. |
-| `clean.py` | AWS Glue DataBrew (`REMOVE_DUPLICATES`, `FILL_WITH_MEDIAN`, `REPLACE_OUTLIERS`) or SageMaker Data Wrangler | The services are visual and scale with reusable recipes or flows. Here, cleaning is pandas code. |
-| `bias.py` | SageMaker Clarify pre-training metrics | Clarify computes 8 metrics and builds reports, but no longer accepts new customers. AWS recommends computing them with pandas, as done here. |
-| `imbalance.py` | SageMaker AI built-in XGBoost (`scale_pos_weight`) and Data Wrangler *Balance data* (SMOTE) | On AWS, training runs on managed instances, and automatic model tuning can optimize `validation:f1` or `validation:auc`. |
+- [AWS Glue Data Quality](https://docs.aws.amazon.com/es_es/glue/latest/dg/glue-data-quality.html) · [DQDL](https://docs.aws.amazon.com/es_es/glue/latest/dg/dqdl.html)
+- [DataBrew: outliers](https://docs.aws.amazon.com/es_es/databrew/latest/dg/recipe-actions.outliers.html)
+- [Métricas de sesgo pre-training](https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/clarify-measure-data-bias.html)
+- [Hiperparámetros de XGBoost](https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/xgboost_hyperparameters.html)
