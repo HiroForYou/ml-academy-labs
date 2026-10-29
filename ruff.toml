@@ -4,4 +4,4 @@ line-length = 130
 select = ["E", "F", "I", "UP", "B"]
 
 [lint.isort]
-known-local-folder = ["bias", "clean", "imbalance", "quality", "generate_data", "plots"]
+known-local-folder = ["bias", "clean", "imbalance", "quality", "generate_data", "plots", "corpus", "chunking", "retrieval", "evaluation", "drift", "model"]

@@ -22,6 +22,8 @@ Todos los laboratorios usan **un solo entorno virtual global** en la carpeta ra�
 | Curso | Tema | Laboratorio | Dependencias |
 |---|---|---|---|
 | AWS ML Engineer – Associate | 1.3 Calidad de datos y sesgo | [data-quality-bias](labs/aws-ml-engineer-associate/data-quality-bias) | pandas, scikit-learn, XGBoost, imbalanced-learn, matplotlib, JupyterLab |
+| AWS ML Engineer – Associate | 2.3 Analizar y evaluar el rendimiento (RAG) | [model-evaluation](labs/aws-ml-engineer-associate/model-evaluation) | pandas, scikit-learn, matplotlib, JupyterLab |
+| AWS ML Engineer – Associate | 4.1 Monitorear la inferencia (data drift) | [monitoring-inference](labs/aws-ml-engineer-associate/monitoring-inference) | pandas, SciPy, scikit-learn, matplotlib, JupyterLab |
 
 ## Desarrollo
 

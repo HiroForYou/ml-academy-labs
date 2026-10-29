@@ -22,6 +22,8 @@ All labs use **a single global virtual environment** in the root `ml-academy/.ve
 | Course | Topic | Lab | Dependencies |
 |---|---|---|---|
 | AWS ML Engineer – Associate | 1.3 Data quality and bias | [data-quality-bias](labs/aws-ml-engineer-associate/data-quality-bias) | pandas, scikit-learn, XGBoost, imbalanced-learn, matplotlib, JupyterLab |
+| AWS ML Engineer – Associate | 2.3 Analyze and evaluate performance (RAG) | [model-evaluation](labs/aws-ml-engineer-associate/model-evaluation) | pandas, scikit-learn, matplotlib, JupyterLab |
+| AWS ML Engineer – Associate | 4.1 Monitor inference (data drift) | [monitoring-inference](labs/aws-ml-engineer-associate/monitoring-inference) | pandas, SciPy, scikit-learn, matplotlib, JupyterLab |
 
 ## Development
 
