@@ -27,13 +27,14 @@ No requiere cuenta de AWS, credenciales ni internet, salvo para instalar paquete
 
 ## Ejecutar
 
-Requiere Python 3.10 o superior.
+Requiere Python 3.10 o superior. Todos los laboratorios y `ml-academy-media` comparten **un solo entorno virtual**; cada laboratorio solo instala su propio `requirements.txt`.
 
 ```bash
-cd labs/aws-ml-engineer-associate/data-quality-bias
+# Entorno global único, en la carpeta raíz ml-academy/ (se crea una sola vez).
 python -m venv .venv
 # Windows: .venv\Scripts\activate    ·    macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r ml-academy-labs/labs/aws-ml-engineer-associate/data-quality-bias/requirements.txt
+cd ml-academy-labs/labs/aws-ml-engineer-associate/data-quality-bias
 jupyter lab notebook.es.ipynb
 ```
 

@@ -15,7 +15,7 @@ labs/<course>/<topic>/
 └── src/                              # reusable modules imported by the notebook
 ```
 
-Each lab uses its own virtual environment. Notebooks are committed with their outputs so you can read them on GitHub without running them.
+All labs use **a single global virtual environment** in the root `ml-academy/.venv`; each one lists only its own dependencies in its `requirements.txt`. Notebooks are committed with their outputs so you can read them on GitHub without running them.
 
 ## Labs
 
@@ -26,6 +26,7 @@ Each lab uses its own virtual environment. Notebooks are committed with their ou
 ## Development
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -r ml-academy-labs/requirements-dev.txt   # in the global ml-academy/.venv
+cd ml-academy-labs
 ruff check . && ruff format --check .   # also checks the notebooks
 ```

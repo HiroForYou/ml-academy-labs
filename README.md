@@ -15,7 +15,7 @@ labs/<curso>/<tema>/
 └── src/                              # módulos reutilizables que importa el notebook
 ```
 
-Cada laboratorio tiene su propio entorno virtual. Los notebooks se publican con sus salidas para poder leerlos en GitHub sin ejecutarlos.
+Todos los laboratorios usan **un solo entorno virtual global** en la carpeta raíz `ml-academy/.venv`; cada uno declara solo sus dependencias en su `requirements.txt`. Los notebooks se publican con sus salidas para poder leerlos en GitHub sin ejecutarlos.
 
 ## Laboratorios
 
@@ -26,6 +26,7 @@ Cada laboratorio tiene su propio entorno virtual. Los notebooks se publican con 
 ## Desarrollo
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -r ml-academy-labs/requirements-dev.txt   # en el entorno global ml-academy/.venv
+cd ml-academy-labs
 ruff check . && ruff format --check .   # también revisa los notebooks
 ```
